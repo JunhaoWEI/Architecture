@@ -57,22 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getWeather() {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-                    @Override
-                    public void log(String message) {
-                        Log.d("wjh", message);
-                    }
-                }).setLevel(HttpLoggingInterceptor.Level.BODY))
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(BASE_UEL)
-                .client(client)
-                .build();
-        MyService service = retrofit.create(MyService.class);
+
+        MyService service = RetrofitManager.getInstance().create(MyService.class);
 
         service.weather_mini("上海")
                 .subscribeOn(Schedulers.newThread())
